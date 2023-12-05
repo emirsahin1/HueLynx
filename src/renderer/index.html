@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="./app/css/main.css" />
+    <link rel="stylesheet" href="./app/css/spectrum.css" />
+    <script src="./app/js/libs/jquery-3.7.1.min.js"></script>
+    <script src="./app/js/libs/spectrum.js"></script>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; style-src 'unsafe-inline' *; img-src 'self' data:; script-src 'self' 'unsafe-inline'"
+    />
+    <title>Hue Lynx</title>
+  </head>
+  <body>
+    <div id="loader-wrapper" class="hidden">
+      <div id="loader"></div>
+      <div>Loading...</div>
+  </div>  
+    <div id="custom-title-bar">
+      <div id="window-title">Hue Lynx</div>
+      <div id="window-buttons">
+        <div class="window-button" id="minimize-button">&#9866;</div>
+        <div class="window-button" id="close-button">&#10005;</div>
+      </div>
+    </div>
+    <div id="page-container">
+      <div id="sidebar-container">
+        <img src="app/media/HueLynxLogo.png" id="logo" />
+        <h2>Hue Lynx</h2>
+        <button class="nav-item button" id="screen-mirror-tab">Screen Mirror</button>
+        <button class="nav-item button" id="music-match-tab">Music Match</button>
+        <button class="nav-item button" id="manual-tab">Manual Control</button>
+        <button class="nav-item button" id="help-tab">Help</button>
+      </div>
+      <div id="content-container">
+        <div id="component-container"></div>
+        <script src="./app/js/loadComponents.js"></script>
+        <button id="discover-lights-btn">Detect Lights</button>
+
+        <div id="lights-container">
+          <div>
+            <label>Lights</label>
+            <div id="light-list"></div>
+          </div>
+          <div>
+            <label>Light Groups</label>
+            <div id="light-group-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="app/js/renderer.js"></script>
+    <script type="module" src="app/js/mirror_screen_controls.js"></script>
+    <script type="module" src="app/js/music_match_controls.js"></script>
+    <script type="module" src="app/js/manual_control.js"></script>
+  </body>
+</html>

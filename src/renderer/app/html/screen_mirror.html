@@ -1,0 +1,34 @@
+<div class="component hidden no-display" id="screen-component">
+  <label id="region-title">Screen Region Selection</label>
+  <canvas
+    width="500px"
+    height="300px"
+    class="region-selector"
+    id="canvas"
+  ></canvas>
+  <div id="screen-size"></div>
+  <div id="grid-options">
+    <div id="grid-toggle-container">
+      <label for="grid-toggle">Use Grid Snapping</label>
+      <label class="switch" for="grid-toggle">
+        <input type="checkbox" id="grid-toggle" checked="true" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+    <label id="size-label" for="grid-size">
+      Grid Size
+      <input type="number" id="grid-size" class="number-input" value="20" />
+    </label>
+  </div>
+  <div class="light-options">
+    <label for="duration-input">
+      Transition Duration
+      <input type="number" id="duration-input" class="number-input" value="85" />
+    </label>
+    <label for="duration-input">
+      Intensity Scale
+      <input type="number" id="scale-input" class="number-input" value="1" />
+    </label>
+    <button id="start-btn" class="action button">Start Screen Mirroring</button>
+  </div>
+</div>

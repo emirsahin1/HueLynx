@@ -1,0 +1,47 @@
+{
+  "name": "HueLynx",
+  "productName": "Hue Lynx",
+  "version": "1.0.0",
+  "description": "Desktop Light Controller App for Lifx Lights",
+  "main": "./out/main/main.js",
+  "scripts": {
+    "start": "electron-vite preview",
+    "dev": "electron-vite dev",
+    "prebuild": "electron-vite build",
+    "lint": "echo \"No linting configured\"",
+    "build": "electron-packager . HueLynx --platform=win32 --arch=ia32,x64 --icon=./src/renderer/app/media/icon.ico",
+    "postinstall": "electron-builder install-app-deps",
+    "build:win": "npm run build && electron-builder --win --config",
+    "build:mac": "npm run build && electron-builder --mac --config",
+    "build:linux": "npm run build && electron-builder --linux --config"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Emir Sahin",
+    "email": "emirsah1@live.com"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^6.4.2",
+    "@electron-forge/maker-deb": "^6.4.2",
+    "@electron-forge/maker-rpm": "^6.4.2",
+    "@electron-forge/maker-squirrel": "^6.4.2",
+    "@electron-forge/maker-zip": "^6.4.2",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.4.2",
+    "@electron-forge/plugin-vite": "^6.4.2",
+    "@electron/packager": "^18.1.0",
+    "electron": "27.0.4",
+    "electron-builder": "^24.6.3",
+    "electron-vite": "^1.0.29"
+  },
+  "dependencies": {
+    "@electron-toolkit/preload": "^2.0.0",
+    "@electron-toolkit/utils": "^2.0.0",
+    "dotenv": "^16.3.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "python-shell": "^5.0.0",
+    "screenshot-desktop": "^1.15.0",
+    "sweetalert2": "^11.9.0",
+    "tinycolor2": "^1.6.0"
+  }
+}

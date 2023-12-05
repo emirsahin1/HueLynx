@@ -1,0 +1,51 @@
+<div class="component hidden no-display" id="music-match-component">
+    <label id="region-title">Music Match</label>
+    <div id="preset-section">
+      <label>Presets</label>
+      <div id="preset-container">
+        <button class="button preset" id="preset-1">Kick Drum</button>
+        <button class="button preset" id="preset-2">Snare Drum</button>
+        <button class="button preset" id="preset-3">Vocals</button>
+        <button class="button preset" id="preset-4">Full Range</button>
+        <button class="button preset" id="preset-5">CHAOS</button>
+      </div>
+    </div>
+    <div class="music-middle-container">
+    <div class="music-options">
+      <label for="threshold-input">
+        Threshold
+        <input type="number" id="threshold-input" class="number-input" value="1.6"  step="any"/>
+      </label>
+      <label for="sma-input">
+        Peak Detection Window
+        <input type="number" id="sma-input" class="number-input" value="100" step="1"/>
+      </label>
+      <label for="min_freq-input">
+        Min Frequency
+        <input type="number" id="min-freq-input" class="number-input" value="0" step="1"/>
+      </label>
+      <label for="max-freq-input">
+        Max Frequency
+        <input type="number" id="max-freq-input" class="number-input" value="20000" step="1"/>
+      </label>
+      <label for="base-color-input">
+        Base Color
+        <input id="base-color-input" class="number-input color"/>
+      </label>
+      <label for="peak-color-input">
+        Peak Color
+        <input id="peak-color-input" class="number-input color" />
+      </label>
+      <label for="max-freq-input">
+        Noise Gate
+        <input type="number" id="noise-gate-input" class="number-input" value="50" step="any"/>
+      </label>
+      <label for="duration-input">
+        Transition Duration
+        <input type="number" id="music-duration-input" class="number-input" value="0" step="1"/>
+      </label>
+    </div>
+    </div>
+    <button id="start-music-btn" class="action button">Start Music Matching</button>
+  </div>
+  
