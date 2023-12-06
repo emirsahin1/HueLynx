@@ -158,6 +158,10 @@ $(function () {
     electronAPI.openLink("https://ko-fi.com/polymir");
   })
 
+  $('#github-link').on('click', () => {
+    electronAPI.openLink("https://github.com/emirsahin1/HueLynx");
+  })
+
 
   //Minimize and Close Buttons --------------------
   document.getElementById('minimize-button').addEventListener('click', () => {

@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog, Tray, Menu, desktopCapturer } = require('electron')
+const { app, BrowserWindow, ipcMain, Tray, Menu} = require('electron')
 import { is } from '@electron-toolkit/utils'
 const { PythonShell } = require('python-shell');
 const screenshot = require('screenshot-desktop');
@@ -178,6 +178,14 @@ app.whenReady().then(() => {
   tray.on('click', () => {
     mainWindow.show()
     mainWindow.webContents.send('window-shown');
+  })
+  
+  tray.on('right-click', () => {
+    const contextMenu = Menu.buildFromTemplate([
+      { label: 'Open', click: () => { mainWindow.show() } },
+      { label: 'Exit', click: () => { app.quit() } }
+    ])
+    tray.popUpContextMenu(contextMenu)
   })
 
   ipcMain.handle('discoverLights', discoverLights)

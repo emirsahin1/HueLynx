@@ -31,14 +31,16 @@ label {
     margin-bottom: 11em;
 }
 
-#donate-text, #donate-button{
+.link{
     cursor: pointer;
     color:rgb(127, 236, 255);
 }
-#donate-text:hover{
+
+.link:hover{
     color:rgb(127, 236, 255);
     text-decoration: underline;
 }
+
 
 #sidebar-container > h2{
     margin-bottom: 1em;
