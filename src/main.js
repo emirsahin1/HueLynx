@@ -176,7 +176,7 @@ function createWindow() {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
   }
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
@@ -200,6 +200,13 @@ app.whenReady().then(() => {
     ])
     tray.popUpContextMenu(contextMenu)
   })
+
+  //open dev tools on F12
+  mainWindow.webContents.on('before-input-event', (event, input) => {
+    if (input.key === 'F12') {
+      mainWindow.webContents.openDevTools();
+    }
+  });
 
   ipcMain.handle('discoverLights', discoverLights)
   ipcMain.handle('startScreenMirroring', (event, params) => { return startScreenMirroring(params); })
