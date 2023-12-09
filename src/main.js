@@ -9,6 +9,17 @@ require('dotenv').config();
 let pythonLoop = null
 let mainWindow = null;
 let tray = null;
+//extension based on platform
+let exe_tail = ''
+if (process.platform === 'win32') {
+  exe_tail = '.exe'
+}
+else if (process.platform === 'darwin') {
+  exe_tail = '.app'
+}
+else if (process.platform === 'linux') {
+  exe_tail = '.sh'
+}
 
 if (require('electron-squirrel-startup')) {
   app.quit();
@@ -17,7 +28,7 @@ if (require('electron-squirrel-startup')) {
 async function discoverLights() {
   return new Promise((resolve, reject) => {
     console.log("Calling python script");
-    const scriptPath = path.join(__dirname, '..', '..', 'src', 'light_controls', 'discover_lights.exe');
+    const scriptPath = path.join(__dirname, '..', '..', 'src', 'light_controls', 'discover_lights' + exe_tail);
 
     exec(scriptPath, (err, stdout, stderr) => {
       if (err) {
@@ -48,7 +59,7 @@ function startScreenMirroring({ lights, region, duration, scale }) {
     }
 
     // Construct the path to your Python script
-    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','mirror_screen.exe')
+    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','mirror_screen' + exe_tail)
     lights = JSON.stringify(lights);
     const args = [lights, region, duration, scale]
 
@@ -94,7 +105,7 @@ function startMusicMatch({lights, duration, threshold, sma_window, min_freq, max
       return
     }
     lights = JSON.stringify(lights);
-    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','music_matcher.exe')
+    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','music_matcher' + exe_tail)
     pythonLoop = spawn(scriptPath, [lights, duration, threshold, sma_window, min_freq, max_freq, base_color, peak_color, noise_gate]);
 
     pythonLoop.on('data', function (message) {
@@ -130,7 +141,7 @@ function startManualControl(lights, scale) {
     }
 
     lights = JSON.stringify(lights);
-    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','manual_control.exe')
+    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','manual_control' + exe_tail)
     pythonLoop = spawn(scriptPath, [lights, scale]);
 
     pythonLoop.on('data', function (message) {

@@ -9,7 +9,7 @@
     "dev": "electron-vite dev",
     "prebuild": "electron-vite build",
     "lint": "echo \"No linting configured\"",
-    "build": "electron-packager . HueLynx --platform=win32 --arch=ia32,x64 --icon=./src/renderer/app/media/icon.ico",
+    "build": "electron-packager . HueLynx --platform=win32 --arch=x64 --icon=./src/renderer/app/media/icon.ico  --out=../HueBuilds --overwrite",
     "postinstall": "electron-builder install-app-deps",
     "build:win": "npm run build && electron-builder --win --config",
     "build:mac": "npm run build && electron-builder --mac --config",
