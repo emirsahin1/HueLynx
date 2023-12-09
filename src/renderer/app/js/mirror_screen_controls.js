@@ -4,11 +4,12 @@ const screenHeight = window.screen.height;
 import { getSelectedLights } from './renderer';
 
 let scaleFactor = 1;
+// let idealWidth = 640;
 if(screenWidth > screenHeight){
-  scaleFactor = Math.floor(screenWidth / 640);
+  scaleFactor = Math.floor(screenWidth / (screenWidth / 3));
 }
 else{
-  scaleFactor = Math.floor(screenHeight / 360);
+  scaleFactor = Math.floor(screenHeight / (screenHeight / 3));
 }
 
 let canvas;

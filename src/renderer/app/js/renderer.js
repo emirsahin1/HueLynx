@@ -10,9 +10,9 @@ let current_tab = "#screen-component"
  */
 async function discoverLights() {
   $("#loader-wrapper").removeClass("hidden");
-  updateSelectedLights([]);
-  $('#light-list').empty();
-  $('#light-group-list').empty();
+  // updateSelectedLights([]);
+  // $('#light-list').empty();
+  // $('#light-group-list').empty();
 
   let discoverData = await electronAPI.discoverLights()
   lights = discoverData.Lights

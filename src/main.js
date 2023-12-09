@@ -1,74 +1,83 @@
 const { app, BrowserWindow, ipcMain, Tray, Menu} = require('electron')
+const { exec, spawn } = require('child_process');
 import { is } from '@electron-toolkit/utils'
-const { PythonShell } = require('python-shell');
 const screenshot = require('screenshot-desktop');
 const path = require('path');
+const kill = require('tree-kill');
 require('dotenv').config();
 
 let pythonLoop = null
-let pythonPath = process.env.PYTHON_PATH;
 let mainWindow = null;
 let tray = null;
 
-// Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
   app.quit();
 }
 
 async function discoverLights() {
   return new Promise((resolve, reject) => {
-    console.log("Calling python script")
-    if (pythonLoop)
-      pythonLoop.kill();
+    console.log("Calling python script");
+    const scriptPath = path.join(__dirname, '..', '..', 'src', 'light_controls', 'discover_lights.exe');
 
-    let pythonShell = new PythonShell("./src/light_controls/discover_lights.py", { mode: "json", pythonPath: pythonPath });
-    pythonShell.on('message', function (message) {
-      resolve(message);
-    });
-
-    pythonShell.end(function (err) {
+    exec(scriptPath, (err, stdout, stderr) => {
       if (err) {
-        console.log("Error Discorvering Lights: " + err);
+        console.error("Error Discovering Lights:", stderr);
         reject(err);
+        return;
       }
+      resolve(JSON.parse(stdout));
     });
-  })
+  });
 }
 
-function startScreenMirroring({lights, region, duration, scale}) {
-  console.log("Lights: " + lights)
+function startScreenMirroring({ lights, region, duration, scale }) {
   return new Promise((resolve, reject) => {
-    if (pythonLoop)
-      pythonLoop.kill();
+    console.log("Lights:", lights);
 
-    if (lights.length == 0) {
+    if (lights.length === 0) {
       reject(new Error("BEGIN:Error: No lights/group selected"));
-      return
+      return;
     }
     if (region == null) {
       reject(new Error("BEGIN:Error: No region selected"));
-      return
+      return;
     }
     if (duration == null) {
       reject(new Error("BEGIN:Error: No duration selected"));
-      return
+      return;
     }
-    lights = JSON.stringify(lights);
-    pythonLoop = new PythonShell("./src/light_controls/mirror_screen.py", { mode: "text", pythonPath: pythonPath, args: [lights, region, duration, scale] });
 
-    pythonLoop.on('message', function (message) {
+    // Construct the path to your Python script
+    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','mirror_screen.exe')
+    lights = JSON.stringify(lights);
+    const args = [lights, region, duration, scale]
+
+    // Kill existing process if it's running
+    if (pythonLoop) {
+      kill(pythonLoop.pid, 'SIGTERM')
+      pythonLoop = null;
+    }
+
+    // Start a new Python process
+    pythonLoop = spawn(scriptPath, args);
+
+    pythonLoop.stdout.on('data', (data) => {
+      const message = data.toString().trim();
       console.log(message);
-      if (message == "OK")
+      if (message === "OK") {
         resolve("Screen Mirroring Started!");
+      }
     });
 
-    pythonLoop.end(function (err) {
-      if (err) {
-        console.log(err)
-        reject(err);
-      }
-      else {
-        reject("BEGIN:Screen Mirroring Unexpectedly Stopped")
+    pythonLoop.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+      reject(new Error(data.toString()));
+    });
+
+    pythonLoop.on('close', (code) => {
+      if (code !== 0) {
+        console.error(`Screen mirroring process exited with code ${code}`);
+        reject(new Error("Screen Mirroring Unexpectedly Stopped"));
       }
     });
   });
@@ -77,24 +86,24 @@ function startScreenMirroring({lights, region, duration, scale}) {
 function startMusicMatch({lights, duration, threshold, sma_window, min_freq, max_freq, base_color, peak_color, noise_gate}) {
   return new Promise((resolve, reject) => {
     if (pythonLoop)
-      pythonLoop.kill();
+      kill(pythonLoop.pid, 'SIGTERM')
+      
 
     if (lights.length == 0) {
       reject(new Error("BEGIN:Error: No lights/group selected"));
       return
     }
     lights = JSON.stringify(lights);
-    pythonLoop = new PythonShell("./src/light_controls/music_matcher.py", {
-      mode: "text", pythonPath: pythonPath, args: [lights, duration, threshold, sma_window, min_freq, max_freq, base_color, peak_color, noise_gate]
-    });
+    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','music_matcher.exe')
+    pythonLoop = spawn(scriptPath, [lights, duration, threshold, sma_window, min_freq, max_freq, base_color, peak_color, noise_gate]);
 
-    pythonLoop.on('message', function (message) {
+    pythonLoop.on('data', function (message) {
       console.log(message);
       if (message == "OK")
         resolve("Music Matching Started!");
     });
 
-    pythonLoop.end(function (err) {
+    pythonLoop.on('close', function (err) {
       if (err) {
         console.log(err)
         reject(err);
@@ -102,6 +111,7 @@ function startMusicMatch({lights, duration, threshold, sma_window, min_freq, max
       else {
         reject("BEGIN:Screen Mirroring Unexpectedly Stopped")
       }
+
     });
   });
 }
@@ -120,16 +130,19 @@ function startManualControl(lights, scale) {
     }
 
     lights = JSON.stringify(lights);
-    pythonLoop = new PythonShell("./src/light_controls/manual_control.py", 
-    { mode: "text", pythonPath: pythonPath, args: [lights, scale] });
+    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','manual_control.exe')
+    pythonLoop = spawn(scriptPath, [lights, scale]);
 
-    pythonLoop.on('message', function (message) {
+    pythonLoop.on('data', function (message) {
       console.log(message);
       if (message == "OK")
         console.log("Manual Control Started!")
         resolve("Manual Control Started!");
     });
-  
+
+    pythonLoop.stdin.on('error', function (code) {
+      kill(pythonLoop.pid, 'SIGTERM')
+    })
   });
 }
 
@@ -163,7 +176,7 @@ function createWindow() {
   } else {
     mainWindow.loadFile(path.join(__dirname, '../renderer/index.html'))
   }
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools()
 }
 
 app.whenReady().then(() => {
@@ -193,8 +206,10 @@ app.whenReady().then(() => {
 
   ipcMain.handle('stopScreenMirroring', () => {
     console.log("Stopping Screen Mirroring...")
-    if (pythonLoop)
-      pythonLoop.kill();
+    if (pythonLoop){
+      kill(pythonLoop.pid, 'SIGTERM')
+      pythonLoop = null;
+    }
   })
 
   ipcMain.handle('startMusicMatch', (event, params) => {
@@ -208,7 +223,7 @@ app.whenReady().then(() => {
 
   ipcMain.on('rgbData', (event, rgbData) => {
     if (pythonLoop){
-      pythonLoop.send(rgbData+"\n");
+      pythonLoop.stdin.write(rgbData+"\n");
     }
   })
 

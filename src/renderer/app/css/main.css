@@ -7,11 +7,13 @@
     margin:0;
     box-sizing: border-box;
     font-family: 'Comforta', sans-serif;
+    font-size: 1.4vw;
 }
+
 
 label {
     display: block;
-    font-size: 16px;
+    font-size: 1em;
     color: #fff;
 }
 
@@ -24,7 +26,7 @@ label {
     margin-bottom: -1em;
     object-fit: contain;
     /* shadow */
-    filter: drop-shadow(0px 0px 8px rgba(0, 0, 0, 0.5));
+    filter: drop-shadow(0px 0px 1.2em rgba(0, 0, 0, 0.5));
 }
 
 #help-tab{
@@ -48,13 +50,12 @@ label {
 
 .number-input{
     width: 100%;
-    padding: 8px 12px;
-    margin-top: 5px;
+    padding: 0.6em 1em;
+    margin-top: 0.3em;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.35em;
     background-color: #4b4266; /* A slightly darker purple */
     color: #fff;
-    font-size: 14px;
     outline: none;
 }
 
@@ -80,17 +81,21 @@ label {
     display:flex;
     flex-direction: column;
     gap: 1.3em;
-    font-size: 13px;
+    font-size: 0.52em;
     user-select: text;    
-    line-height: 1.3em;
+    line-height: 1.73em;
 }
 
 #help-container p{
-    margin-top: 0.35em;
+    margin-top: 0.45em;
 }
 
 #help-container h4{
-    color:#cde0ff
+    color:#cdffcd
+}
+
+#kofi-logo{
+    width: 13em;
 }
 
 ::selection {
@@ -128,12 +133,12 @@ label {
 
 
 .button {
-    padding: 10px 20px;
+    padding: 0.6em 1em;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3em;
     background-color: #6e5aa8; /* A purple that matches the theme */
     color: #fff;
-    font-size: 16px;
+    font-size: 1em;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -160,15 +165,15 @@ label {
 /* label in cont */
 #lights-container  label  {
     color: #fff;
-    font-size: 18px;
-    border-bottom: 1px solid #ffffff73;
-    padding-bottom: 5px;
+    font-size: 1em;
+    border-bottom: 0.1em solid #ffffff73;
+    padding-bottom: 0.3em;
 }
 
 /* Styling for lists */
 #light-list, #light-group-list {
-    padding: 10px;
-    border-radius: 5px;
+    padding: 0.7em;
+    border-radius: 0.3em;
     background-color: rgba(255, 255, 255, 0.1);
     color: #fff;
 }
@@ -307,7 +312,7 @@ body {
 }
 
 #sidebar-container:hover {
-  transform: perspective(500px) rotateY(13deg); /* Apply the tilt effect on hover */
+  transform: perspective(400px) rotateY(13deg); /* Apply the tilt effect on hover */
   background-color: #00000044;
 }
 
@@ -364,17 +369,17 @@ body {
 #discover-lights-btn {
     display: inline-block;
     width: 15em;
-    padding: 10px 20px;
-    font-size: 20px;
+    padding: 0.5em 1em;
+    font-size: 1.2em;
     color: white;
     background: linear-gradient(45deg, #88220b, #795f0a, #17772a, #184875);
     background-size: 200% 200%;
     border: none;
-    border-radius: 5px;
+    border-radius: 0.3em;
     cursor: pointer;
     animation: hue-rotate 12s infinite; /* Adjust the duration as needed */
     transition: box-shadow 0.3s ease;
-    margin-bottom: 0.7em;
+    margin-bottom: 0.2em;
   }
   
   @keyframes hue-rotate {
@@ -392,7 +397,7 @@ body {
   /* Hover effect (optional) */
   #discover-lights-btn:hover {
     /* animation-play-state: paused; */
-    box-shadow: 0px 0px 26px 0px rgba(182, 182, 182, 0.589);
+    box-shadow: 0px 0px 1.1em 0px rgba(182, 182, 182, 0.589);
   }
   
 
@@ -412,8 +417,8 @@ body {
     display:flex;
     align-items: center;
     flex-direction: column;
-    padding-bottom: 2.5em;
-    border-bottom: 1px solid #c1adff85;
+    padding-bottom: 1.5em;
+    border-bottom: 0.1em solid #c1adff85;
     transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
@@ -433,7 +438,7 @@ body {
     flex-wrap: wrap;
     width: 20em;
     min-width: 21.5em;
-    min-height: 92.8px;
+    min-height: 6.8em;
     max-height: 5.8em;
     overflow-y: auto;
     overflow-x: hidden;
@@ -442,12 +447,12 @@ body {
 
 /* For Chromium-based browsers (including Electron) */
 #light-list::-webkit-scrollbar, #light-group-list::-webkit-scrollbar {
-    width: 8px; /* width of the scrollbar */
+    width: 0.4em; /* width of the scrollbar */
 }
 
 #light-list::-webkit-scrollbar-thumb,  #light-group-list::-webkit-scrollbar-thumb {
     background-color: rgba(108, 156, 154, 0.7); /* color of the scrollbar thumb */
-    border-radius: 4px;
+    border-radius: 0.2em;
 }
 
 #light-list::-webkit-scrollbar-track,  #light-group-list::-webkit-scrollbar-track {
@@ -499,8 +504,8 @@ canvas {
 .switch {
     position: relative;
     display: inline-block;
-    width: 60px;
-    height: 34px;
+    width: 3.82em;
+    height: 2.1em;
 }
 
 .switch input {
@@ -525,10 +530,10 @@ canvas {
 .slider:before {
     position: absolute;
     content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
+    height: 1.6em;
+    width: 1.6em;
+    left: 0.3em;
+    bottom: 0.21em;
     background-color: rgb(41, 41, 41);
     border-radius: 1em;
     -webkit-transition: 0.4s;
@@ -540,13 +545,13 @@ input:checked + .slider {
 }
 
 input:focus + .slider {
-    box-shadow: 0 0 1px #2196F3;
+    box-shadow: 0 0 0.3em #2196F3;
 }
 
 input:checked + .slider:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
-    transform: translateX(26px);
+    -webkit-transform: translateX(1.6em);
+    -ms-transform: translateX(1.6em);
+    transform: translateX(1.6em);
 }
 
 
@@ -585,19 +590,24 @@ input:checked + .slider:before {
     gap: 1em;
     align-items: center;
     justify-content: center;
-    font-size: 1.5em;
+    font-size: 1em;
     z-index: 1000; /* ensures it's above other content */
     opacity: 1;
     transition: visibility 0.3s, opacity 0.3s ease-in-out;
   }
   
+  #loader-wrapper div{
+    font-size: 1.4em;
+  }
+
   #loader {
-    border: 7px solid #f3f3f3; /* Light grey */
-    border-top: 7px solid #3498db; /* Blue */
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
+    border-top: 0.4em solid #3498db; 
+    /* glow */
+    box-shadow: 0 0 1.6em #3498db;
+    border-radius: 100%;
+    width: 3em;
+    height: 3em;
+    animation: spin 1.4s linear infinite;
   }
   
   @keyframes spin {
@@ -617,7 +627,7 @@ input:checked + .slider:before {
     justify-content: space-between;
     align-items: center;
     padding: 0px;
-    padding-left: 10px;
+    padding-left: 0.7em;
     width: 100%;
     -webkit-app-region: drag;
 }
@@ -637,7 +647,7 @@ input:checked + .slider:before {
 }
 
 .window-button {
-    width: 40px;
+    width: 3em;
     height: auto;
     text-align: center;
     line-height: 1.5em;
