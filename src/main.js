@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Tray, Menu} = require('electron')
+const { app, BrowserWindow, ipcMain, Tray, Menu } = require('electron')
 const { exec, spawn } = require('child_process');
 import { is } from '@electron-toolkit/utils'
 const screenshot = require('screenshot-desktop');
@@ -59,7 +59,7 @@ function startScreenMirroring({ lights, region, duration, scale }) {
     }
 
     // Construct the path to your Python script
-    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','mirror_screen' + exe_tail)
+    const scriptPath = path.join(__dirname, '..', '..', 'src', 'light_controls', 'mirror_screen' + exe_tail)
     lights = JSON.stringify(lights);
     const args = [lights, region, duration, scale]
 
@@ -94,23 +94,23 @@ function startScreenMirroring({ lights, region, duration, scale }) {
   });
 }
 
-function startMusicMatch({lights, duration, threshold, sma_window, min_freq, max_freq, base_color, peak_color, noise_gate}) {
+function startMusicMatch({ lights, duration, threshold, sma_window, min_freq, max_freq, base_color, peak_color, noise_gate }) {
   return new Promise((resolve, reject) => {
     if (pythonLoop)
       kill(pythonLoop.pid, 'SIGTERM')
-      
 
     if (lights.length == 0) {
       reject(new Error("BEGIN:Error: No lights/group selected"));
       return
     }
     lights = JSON.stringify(lights);
-    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','music_matcher' + exe_tail)
+    const scriptPath = path.join(__dirname, '..', '..', 'src', 'light_controls', 'music_matcher' + exe_tail)
     pythonLoop = spawn(scriptPath, [lights, duration, threshold, sma_window, min_freq, max_freq, base_color, peak_color, noise_gate]);
 
-    pythonLoop.on('data', function (message) {
+    pythonLoop.stdout.on('data', function (data) {
+      const message = data.toString().trim();
       console.log(message);
-      if (message == "OK")
+      if (message === "OK")
         resolve("Music Matching Started!");
     });
 
@@ -133,7 +133,7 @@ function startMusicMatch({lights, duration, threshold, sma_window, min_freq, max
 function startManualControl(lights, scale) {
   return new Promise((resolve, reject) => {
     if (pythonLoop)
-      pythonLoop.kill();
+      kill(pythonLoop.pid, 'SIGTERM')
 
     if (lights.length == 0) {
       reject(new Error("BEGIN:Error: No lights/group selected"));
@@ -141,14 +141,14 @@ function startManualControl(lights, scale) {
     }
 
     lights = JSON.stringify(lights);
-    const scriptPath = path.join(__dirname, '..','..', 'src', 'light_controls','manual_control' + exe_tail)
+    const scriptPath = path.join(__dirname, '..', '..', 'src', 'light_controls', 'manual_control' + exe_tail)
     pythonLoop = spawn(scriptPath, [lights, scale]);
 
     pythonLoop.on('data', function (message) {
       console.log(message);
       if (message == "OK")
         console.log("Manual Control Started!")
-        resolve("Manual Control Started!");
+      resolve("Manual Control Started!");
     });
 
     pythonLoop.stdin.on('error', function (code) {
@@ -203,7 +203,7 @@ app.whenReady().then(() => {
     mainWindow.show()
     mainWindow.webContents.send('window-shown');
   })
-  
+
   tray.on('right-click', () => {
     const contextMenu = Menu.buildFromTemplate([
       { label: 'Open', click: () => { mainWindow.show() } },
@@ -224,7 +224,7 @@ app.whenReady().then(() => {
 
   ipcMain.handle('stopScreenMirroring', () => {
     console.log("Stopping Screen Mirroring...")
-    if (pythonLoop){
+    if (pythonLoop) {
       kill(pythonLoop.pid, 'SIGTERM')
       pythonLoop = null;
     }
@@ -240,8 +240,8 @@ app.whenReady().then(() => {
   })
 
   ipcMain.on('rgbData', (event, rgbData) => {
-    if (pythonLoop){
-      pythonLoop.stdin.write(rgbData+"\n");
+    if (pythonLoop) {
+      pythonLoop.stdin.write(rgbData + "\n");
     }
   })
 
@@ -250,7 +250,18 @@ app.whenReady().then(() => {
   })
 
   ipcMain.on('closeWindow', () => {
-    BrowserWindow.getFocusedWindow().close()
+    if (pythonLoop) {
+      kill(pythonLoop.pid, 'SIGTERM')
+      //make sure the python process is killed before closing the app
+      pythonLoop.on('close', () => {
+        BrowserWindow.getFocusedWindow().close()
+        app.quit()
+      })
+    }
+    else{
+      BrowserWindow.getFocusedWindow().close()
+      app.quit()
+    }
   })
 
   ipcMain.handle('openLink', (event, link) => {
