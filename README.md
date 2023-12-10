@@ -4,14 +4,13 @@
 An un-official desktop app to control Lifx brand lights. 
 
 ## Download / Installation
-[Download Latest Windows Release - V1.0]()
+[Download Latest Windows Release - V1.0](https://drive.google.com/file/d/1g8VrmgBt6bGHW2VEMYR-s88eR0ZvgQJc/view?usp=sharing)
 
-[Download Latest Linux Release - V1.0]()
+After downloading, extract the files and run HueLynx.exe. 
+Windows may warn about it being from an untrusted source but you can click "more" to proceed. If you don't want to run it as a .exe file, please see below to run it from the source code yourself.
 
-[Download Latest Mac Release - V1.0]()
+Mac Version is in Progress.
 
-
-After downloading, extract the files and run HueLynx.exe
 
 ## Features:
 * **Screen Mirroring**: The lights can be set to match the average color of your screen. The region of the screen used can be modified using the region selector UI.
