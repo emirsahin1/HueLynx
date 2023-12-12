@@ -96,7 +96,8 @@ $(function () {
     showButtons: false,
     color: "rgb(31, 5, 44)",
     change: function (color) {
-      base_color = JSON.stringify(color.toRgb());
+      let rgb = color.toRgb();
+      base_color = JSON.stringify({r: rgb.r, g: rgb.g, b: rgb.b});
       stopMusicMatching();
     }
   });
@@ -107,7 +108,8 @@ $(function () {
     showButtons: false,
     color: "#f00",
     change: function (color) {
-      peak_color = JSON.stringify(color.toRgb());
+      let rgb = color.toRgb();
+      peak_color = JSON.stringify({r: rgb.r, g: rgb.g, b: rgb.b});
       stopMusicMatching();
     }
   });
