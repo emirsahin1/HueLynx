@@ -22,7 +22,7 @@ else if (process.platform === 'linux') {
 }
 
 if (require('electron-squirrel-startup')) {
-  app.quit();
+  gracefulShutdown()
 }
 
 async function discoverLights() {
@@ -190,6 +190,19 @@ function createWindow() {
   // mainWindow.webContents.openDevTools()
 }
 
+function gracefulShutdown() {
+  if (pythonLoop) {
+    //make sure the python process is killed before closing the app
+    pythonLoop.on('close', () => {
+      app.quit()
+    })
+    kill(pythonLoop.pid, 'SIGTERM')
+  }
+  else{
+    app.quit()
+  }
+}
+
 app.whenReady().then(() => {
   createWindow();
   tray = null;
@@ -207,7 +220,8 @@ app.whenReady().then(() => {
   tray.on('right-click', () => {
     const contextMenu = Menu.buildFromTemplate([
       { label: 'Open', click: () => { mainWindow.show() } },
-      { label: 'Exit', click: () => { app.quit() } }
+      { label: 'Exit', click: () => { 
+        gracefulShutdown() } }
     ])
     tray.popUpContextMenu(contextMenu)
   })
@@ -250,18 +264,7 @@ app.whenReady().then(() => {
   })
 
   ipcMain.on('closeWindow', () => {
-    if (pythonLoop) {
-      kill(pythonLoop.pid, 'SIGTERM')
-      //make sure the python process is killed before closing the app
-      pythonLoop.on('close', () => {
-        BrowserWindow.getFocusedWindow().close()
-        app.quit()
-      })
-    }
-    else{
-      BrowserWindow.getFocusedWindow().close()
-      app.quit()
-    }
+    gracefulShutdown()
   })
 
   ipcMain.handle('openLink', (event, link) => {
@@ -283,7 +286,7 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
-    app.quit();
+    gracefulShutdown()
   }
 });
 
