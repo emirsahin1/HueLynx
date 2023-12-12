@@ -99,7 +99,12 @@ $(function () {
       let rgb = color.toRgb();
       base_color = JSON.stringify({r: rgb.r, g: rgb.g, b: rgb.b});
       stopMusicMatching();
-    }
+    },
+    move: function (color) {
+      let rgb = color.toRgb();
+      base_color = JSON.stringify({r: rgb.r, g: rgb.g, b: rgb.b});
+      setColor();
+    },
   });
   
   $("#peak-color-input").spectrum({
@@ -111,7 +116,12 @@ $(function () {
       let rgb = color.toRgb();
       peak_color = JSON.stringify({r: rgb.r, g: rgb.g, b: rgb.b});
       stopMusicMatching();
-    }
+    },
+    move: function (color) {
+      let rgb = color.toRgb();
+      peak_color = JSON.stringify({r: rgb.r, g: rgb.g, b: rgb.b});
+      setColor();
+    },
   });
 
   $("#threshold-input").on('change', (event) => {
