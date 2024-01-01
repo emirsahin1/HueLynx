@@ -3,13 +3,9 @@ const screenWidth = window.screen.width;
 const screenHeight = window.screen.height;
 import { getSelectedLights } from './renderer';
 
-let scaleFactor = 1;
-// let idealWidth = 640;
-if(screenWidth > screenHeight){
-  scaleFactor = Math.floor(screenWidth / (screenWidth / 3));
-}
-else{
-  scaleFactor = Math.floor(screenHeight / (screenHeight / 3));
+let scaleFactor = 0.33;
+if(scaleFactor * screenWidth > 640){
+  scaleFactor = 640 / screenWidth;
 }
 
 let canvas;
@@ -199,8 +195,8 @@ $(function () {
   // Initial Setup --------------------
   canvas = $('#canvas')[0];
   ctx = canvas.getContext('2d');
-  canvas.width = screenWidth / scaleFactor;
-  canvas.height = screenHeight / scaleFactor;
+  canvas.width = screenWidth * scaleFactor;
+  canvas.height = screenHeight * scaleFactor;
 
   gridOffset = parseInt($('#grid-size')[0].value);
   duration = parseInt($('#duration-input')[0].value);

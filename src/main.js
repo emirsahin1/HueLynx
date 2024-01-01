@@ -160,13 +160,26 @@ function startManualControl(lights, scale) {
 
 function createWindow() {
   const { screen } = require('electron')
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+    
+  let windowWidth;
+  let windowHeight;
 
-  const primaryDisplay = screen.getPrimaryDisplay()
-  const { width, height } = primaryDisplay.workAreaSize
+  let scaleW = 0.55
+  let scaleH = 0.90
+
+  windowWidth = parseInt(width * scaleW);
+  if (windowWidth > 1146){
+    windowWidth = 1146;
+  }
+  windowHeight = parseInt(height * scaleH);
+  console.log("Window Width:", windowWidth, "Window Height:", windowHeight)
+
   mainWindow = new BrowserWindow({
-    width: Math.floor(width / 1.7),
-    height: Math.floor(height / 1.1),
-    resizable: false,
+    width: windowWidth,
+    height: windowHeight,
+    resizable: true,
     autoHideMenuBar: true,
     useContentSize: true,
     frame: false,
