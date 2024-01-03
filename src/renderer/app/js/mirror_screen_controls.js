@@ -7,7 +7,6 @@ let scaleFactor = 0.33;
 if(scaleFactor * screenWidth > 640){
   scaleFactor = 640 / screenWidth;
 }
-
 let canvas;
 let ctx;
 let gridOffset;
@@ -37,7 +36,6 @@ async function takeScreenshot() {
 async function startScreenMirroring() {
   $('#start-btn').addClass('stop-active');
   $('#start-btn')[0].textContent = 'Stop Screen Mirroring'
-  
   let lights = getSelectedLights();
 
   electronAPI.startScreenMirroring({lights, region, duration, scale}).then((result) => {
@@ -171,7 +169,7 @@ function setupCanvasFunctions() {
 
       //Make sure the region is within the screen bounds
       points = points.map((element, index) => {
-        element = element * scaleFactor;
+        element = element / scaleFactor;
         if (index % 2 === 0) {
           if (element > screenWidth)
             return screenWidth;
@@ -181,9 +179,9 @@ function setupCanvasFunctions() {
       });
 
       region = {
-        x: points[0], y: points[1],
-        width: Math.abs(points[0] - points[2]),
-        height: Math.abs(points[1] - points[3])
+        x: Math.floor(points[0]), y: Math.floor(points[1]),
+        width: Math.floor(Math.abs(points[0] - points[2])),
+        height: Math.floor(Math.abs(points[1] - points[3]))
       }
       region = JSON.stringify(region);
     }
