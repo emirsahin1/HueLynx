@@ -3,6 +3,8 @@
 # Hue Lynx
 An un-official desktop app to control Lifx brand lights. 
 
+[Demo Video](https://www.youtube.com/watch?v=z0-2iocqeIU&ab_channel=Polymir)
+
 ## Download / Installation
 [Download Latest Windows Release - V1.31](https://drive.google.com/file/d/19rP_61eWvNOiV5THb48NUdvmSRVcC6kj/view?usp=drive_link)
 
